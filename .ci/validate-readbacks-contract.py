@@ -7,7 +7,7 @@ import xml.etree.ElementTree as ET
 
 
 ROOT = Path(__file__).resolve().parents[1]
-BACKEND_COMMIT = "c15eddd84c7d7e3b86849e353cfa396cf48da1a5"
+BACKEND_COMMIT = "31d0aec28de483aa0aea4ba0483a8caddbad9702"
 BACKEND_HEADER_URL = (
     "https://raw.githubusercontent.com/DarkIzuku/shadp2p/"
     f"{BACKEND_COMMIT}/src/core/emulator_settings.h"
