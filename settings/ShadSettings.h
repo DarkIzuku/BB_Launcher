@@ -54,8 +54,9 @@ private:
     const QString fullscreenModeGroupBoxtext =
         "Fullscreen Mode:\nChoose between windowed, borderless or exclusive fullscreen mode";
     const QString ReadbacksCheckBoxtext =
-        "Enable GPU readbacks which fixed vertex explosions in Bloodborne without mods. This WIP "
-        "implementation hits performance significantly.";
+        "GPU readbacks fix vertex explosions in Bloodborne without removing FaceGen. Optimized "
+        "(Experimental) maps to backend mode 3 and combines precise GPU write protection with "
+        "fence-delayed protection and preemptive downloads to reduce stutter.";
     const QString GPUBufferCheckBoxtext = "May help with PM4 Type 0 crashes";
     const QString discordRPCCheckboxtext =
         "Enable Discord Rich Presence:\nDisplays the emulator icon "

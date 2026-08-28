@@ -31,6 +31,9 @@ void IpcClient::startEmulator(const QFileInfo& exe, const QStringList& args,
 
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
     env.insert("SHADPS4_ENABLE_IPC", "true");
+    // Experimental performance builds must not inherit the optional reverse-engineering tracer.
+    // This does not affect the seamless co-op patches installed by the emulator.
+    env.remove("SHADPS4_BLOODBORNE_RE_TRACE");
     process->setProcessEnvironment(env);
 
     std::filesystem::path userPath;

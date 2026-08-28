@@ -52,6 +52,14 @@ inline bool operator!=(GameInstallDir const& a, GameInstallDir const& b) {
 ShadSettings::ShadSettings(std::shared_ptr<IpcClient> ipc_client, QWidget* parent)
     : m_ipc_client(ipc_client), QDialog(parent), ui(new Ui::ShadSettings) {
     ui->setupUi(this);
+
+    // The launcher writes these values directly to GPU.readbacks_mode in shadPS4's per-game
+    // JSON. Store the backend enum as item data so the mapping does not depend on display order.
+    ui->readbacksModeComboBox->setItemData(0, static_cast<int>(GpuReadbacksMode::Disabled));
+    ui->readbacksModeComboBox->setItemData(1, static_cast<int>(GpuReadbacksMode::Relaxed));
+    ui->readbacksModeComboBox->setItemData(2, static_cast<int>(GpuReadbacksMode::Precise));
+    ui->readbacksModeComboBox->setItemData(3, static_cast<int>(GpuReadbacksMode::Optimized));
+
     getPhysicalDevices();
     ui->tabWidgetSettings->setUsesScrollButtons(false);
     initialHeight = this->height();
@@ -330,7 +338,12 @@ void ShadSettings::LoadValuesFromConfig() {
     ui->widthSpinBox->setValue(gs_settings.GetWindowWidth());
     ui->heightSpinBox->setValue(gs_settings.GetWindowHeight());
     ui->vblankSpinBox->setValue(gs_settings.GetVblankFrequency());
-    ui->readbacksModeComboBox->setCurrentIndex(gs_settings.GetReadbacksMode());
+    const int readbacksModeIndex =
+        ui->readbacksModeComboBox->findData(static_cast<int>(gs_settings.GetReadbacksMode()));
+    ui->readbacksModeComboBox->setCurrentIndex(
+        readbacksModeIndex >= 0
+            ? readbacksModeIndex
+            : ui->readbacksModeComboBox->findData(static_cast<int>(GpuReadbacksMode::Disabled)));
     ui->DMACheckBox->setChecked(gs_settings.IsDirectMemoryAccessEnabled());
     ui->disableTrophycheckBox->setChecked(gs_settings.IsTrophyPopupDisabled());
     ui->popUpPosComboBox->setCurrentText(
@@ -400,7 +413,7 @@ void ShadSettings::updateNoteTextEdit(const QString& elementName) {
         text = consoleLanguageGroupBoxtext;
     } else if (elementName == "FullscreenModeGroupBox") {
         text = fullscreenModeGroupBoxtext;
-    } else if (elementName == "ReadbacksCheckBox") {
+    } else if (elementName == "readbacksModeComboBox") {
         text = ReadbacksCheckBoxtext;
     } else if (elementName == "GPUBufferCheckBox") {
         text = GPUBufferCheckBoxtext;
@@ -507,7 +520,10 @@ void ShadSettings::SaveSettings() {
     gs_settings.SetLogSync(ui->logTypeCheckBox->isChecked(), true);
 
     // ------------------ Debug tab --------------------------------------------------------
-    gs_settings.SetReadbacksMode(ui->readbacksModeComboBox->currentIndex(), true);
+    const u32 readbacksMode = ui->readbacksModeComboBox->currentData().isValid()
+                                  ? ui->readbacksModeComboBox->currentData().toUInt()
+                                  : static_cast<u32>(GpuReadbacksMode::Disabled);
+    gs_settings.SetReadbacksMode(readbacksMode, true);
     gs_settings.SetPipelineCacheEnabled(ui->pipelineCacheCheckBox->isChecked(), true);
     gs_settings.SetExtraDmemInMBytes(ui->dmemSpinBox->value(), true);
     gs_settings.SetDirectMemoryAccessEnabled(ui->DMACheckBox->isChecked(), true);
@@ -597,7 +613,8 @@ void ShadSettings::SetDefaults() {
     ui->pipelineCacheCheckBox->setChecked(false);
 
     ui->vblankSpinBox->setValue(60);
-    ui->readbacksModeComboBox->setCurrentIndex(0);
+    ui->readbacksModeComboBox->setCurrentIndex(
+        ui->readbacksModeComboBox->findData(static_cast<int>(GpuReadbacksMode::Disabled)));
     ui->DMACheckBox->setChecked(false);
     ui->dmemSpinBox->setValue(0);
 

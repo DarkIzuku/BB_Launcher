@@ -31,10 +31,18 @@ enum UsbBackendType : int {
 };
 
 enum GpuReadbacksMode : int {
-    Disabled,
-    Relaxed,
-    Precise,
+    Disabled = 0,
+    Relaxed = 1,
+    Precise = 2,
+    // Matches DarkIzuku/shadp2p's experimental readback mode. Keep this appended so existing
+    // game-specific Disabled/Relaxed/Precise values retain their meaning.
+    Optimized = 3,
 };
+
+static_assert(GpuReadbacksMode::Disabled == 0);
+static_assert(GpuReadbacksMode::Relaxed == 1);
+static_assert(GpuReadbacksMode::Precise == 2);
+static_assert(GpuReadbacksMode::Optimized == 3);
 
 enum class ConfigMode {
     Default,

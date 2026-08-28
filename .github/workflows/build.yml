@@ -1,6 +1,8 @@
 name: Build and Prerelease
 
 on:
+  workflow_dispatch:
+
   push:
     branches: [ "**" ]
     paths-ignore:
@@ -57,9 +59,16 @@ jobs:
         COMMIT_RANGE: ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }}
       run: ./.ci/clang-format.sh
 
+  readbacks-contract:
+    runs-on: ubuntu-24.04
+    steps:
+    - uses: actions/checkout@v6
+    - name: Validate BBLauncher and shadPS4 readbacks mapping
+      run: python3 ./.ci/validate-readbacks-contract.py
+
   build-windows:
     runs-on: windows-2022
-    needs: get-info
+    needs: [get-info, readbacks-contract]
     steps:
     - uses: actions/checkout@v6
       with:
@@ -91,7 +100,7 @@ jobs:
 
   build-windows-noUAC:
     runs-on: windows-2022
-    needs: get-info
+    needs: [get-info, readbacks-contract]
     steps:
     - uses: actions/checkout@v6
       with:
@@ -123,7 +132,7 @@ jobs:
 
   build-macos:
     runs-on: macos-15
-    needs: get-info
+    needs: [get-info, readbacks-contract]
     steps:
     - uses: actions/checkout@v6
       with:
@@ -167,7 +176,7 @@ jobs:
 
   build-linux:
     runs-on: ubuntu-24.04
-    needs: get-info
+    needs: [get-info, readbacks-contract]
     steps:
     - uses: actions/checkout@v6
       with:
@@ -226,7 +235,7 @@ jobs:
 
   build-linux-downloader:
     runs-on: ubuntu-24.04
-    needs: get-info
+    needs: [get-info, readbacks-contract]
     steps:
     - uses: actions/checkout@v6
       with:
@@ -396,3 +405,4 @@ jobs:
             echo "Skipping pre-release: $release_id (newer or same date)"
           fi
         done
+
