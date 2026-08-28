@@ -934,6 +934,11 @@
                 <string>Precise</string>
                </property>
               </item>
+              <item>
+               <property name="text">
+                <string>Optimized (Experimental)</string>
+               </property>
+              </item>
              </widget>
             </item>
             <item>
@@ -951,7 +956,7 @@
                </font>
               </property>
               <property name="text">
-               <string>*Fixes vertex explosions - Relaxed has much better performance than Precise, at the cost of some traversal/loading stutter</string>
+               <string>*Fixes vertex explosions. Optimized (Experimental) keeps precise GPU write protection while using fence-delayed protection and preemptive downloads to reduce stutter.</string>
               </property>
               <property name="wordWrap">
                <bool>true</bool>
