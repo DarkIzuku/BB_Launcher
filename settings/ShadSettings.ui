@@ -1262,6 +1262,50 @@
              </widget>
             </item>
             <item>
+             <widget class="QGroupBox" name="p2pPortGroupBox">
+              <property name="title">
+               <string>P2P Port</string>
+              </property>
+              <property name="toolTip">
+               <string>Physical UDP port used by NpSignaling and Matching2. Auto keeps the existing random-port behavior.</string>
+              </property>
+              <layout class="QHBoxLayout" name="p2pPortLayout">
+               <item>
+                <widget class="QSpinBox" name="p2pPortSpinBox">
+                 <property name="specialValueText">
+                  <string>Auto</string>
+                 </property>
+                 <property name="maximum">
+                  <number>65535</number>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
+             <widget class="QGroupBox" name="p2pPortRangeEndGroupBox">
+              <property name="title">
+               <string>P2P Port Range End</string>
+              </property>
+              <property name="toolTip">
+               <string>Leave Auto for one fixed port. Set an ending port to try each UDP port in the range when several shadPS4 instances run on this computer.</string>
+              </property>
+              <layout class="QHBoxLayout" name="p2pPortRangeEndLayout">
+               <item>
+                <widget class="QSpinBox" name="p2pPortRangeEndSpinBox">
+                 <property name="specialValueText">
+                  <string>Auto</string>
+                 </property>
+                 <property name="maximum">
+                  <number>65535</number>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
              <widget class="QCheckBox" name="upnpCheckBox">
               <property name="text">
                <string>Enable UPNP</string>
