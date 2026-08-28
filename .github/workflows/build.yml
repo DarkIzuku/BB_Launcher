@@ -1,6 +1,8 @@
 name: Build and Prerelease
 
 on:
+  workflow_dispatch:
+
   push:
     branches: [ "**" ]
     paths-ignore:
@@ -403,3 +405,4 @@ jobs:
             echo "Skipping pre-release: $release_id (newer or same date)"
           fi
         done
+
