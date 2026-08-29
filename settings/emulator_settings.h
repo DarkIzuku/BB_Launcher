@@ -207,6 +207,8 @@ struct GeneralSettings {
     Setting<std::string> signaling_info{""};
     Setting<std::string> shadnet_webapi_server{"http://srv.shadps4.net:31315"};
     Setting<bool> enable_upnp{true};
+    Setting<u32> p2p_port{0};
+    Setting<u32> p2p_port_range_end{0};
     Setting<bool> trophy_popup_disabled{false};
     Setting<double> trophy_notification_duration{6.0};
     Setting<std::string> trophy_notification_side{"right"};
@@ -239,7 +241,10 @@ struct GeneralSettings {
             make_override<GeneralSettings>("signaling_info", &GeneralSettings::signaling_info),
             make_override<GeneralSettings>("shadnet_webapi_server",
                                            &GeneralSettings::shadnet_webapi_server),
-            make_override<GeneralSettings>("enable_upnp", &GeneralSettings::enable_upnp)};
+            make_override<GeneralSettings>("enable_upnp", &GeneralSettings::enable_upnp),
+            make_override<GeneralSettings>("p2p_port", &GeneralSettings::p2p_port),
+            make_override<GeneralSettings>("p2p_port_range_end",
+                                           &GeneralSettings::p2p_port_range_end)};
     }
 };
 NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(GeneralSettings, install_dirs, addon_install_dir, home_dir,
@@ -248,7 +253,8 @@ NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(GeneralSettings, install_dirs, addon_install_
                                    trophy_notification_duration, show_splash, enable_upnp,
                                    trophy_notification_side, connected_to_network,
                                    discord_rpc_enabled, show_fps_counter, console_language,
-                                   shadnet_server, signaling_info, shadnet_webapi_server)
+                                   shadnet_server, signaling_info, shadnet_webapi_server, p2p_port,
+                                   p2p_port_range_end)
 
 // -------------------------------
 // Log settings
@@ -295,9 +301,9 @@ NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(LogSettings, append, enable, filter, max_skip
 // Debug settings
 // -------------------------------
 struct DebugSettings {
-    Setting<bool> debug_dump{false};               // specific
-    Setting<bool> shader_collect{false};           // specific
-    Setting<std::string> config_version{""};       // specific
+    Setting<bool> debug_dump{false};         // specific
+    Setting<bool> shader_collect{false};     // specific
+    Setting<std::string> config_version{""}; // specific
 
     std::vector<OverrideItem> GetOverrideableFields() const {
         return std::vector<OverrideItem>{
@@ -642,6 +648,8 @@ public:
     SETTING_FORWARD(m_general, SignalingInfo, signaling_info)
     SETTING_FORWARD(m_general, ShadnetWebapiServer, shadnet_webapi_server)
     SETTING_FORWARD_BOOL(m_general, UPnPEnabled, enable_upnp)
+    SETTING_FORWARD(m_general, P2PPort, p2p_port)
+    SETTING_FORWARD(m_general, P2PPortRangeEnd, p2p_port_range_end)
     SETTING_FORWARD_BOOL(m_general, DiscordRPCEnabled, discord_rpc_enabled)
     SETTING_FORWARD_BOOL(m_general, ShowFpsCounter, show_fps_counter)
     SETTING_FORWARD(m_general, ConsoleLanguage, console_language)

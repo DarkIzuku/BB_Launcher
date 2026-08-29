@@ -108,19 +108,18 @@ ShadSettings::ShadSettings(std::shared_ptr<IpcClient> ipc_client, QWidget* paren
     QPushButton* deleteButton = new QPushButton("Delete Game-specific config");
     ui->buttonBox->addButton(deleteButton, QDialogButtonBox::ActionRole);
 
-    connect(
-        deleteButton, &QPushButton::pressed, this, [this]() {
-            std::string filename = Common::game_serial + ".json";
-            std::filesystem::path gsConfig = Common::GetShadUserDir() / "custom_configs" / filename;
+    connect(deleteButton, &QPushButton::pressed, this, [this]() {
+        std::string filename = Common::game_serial + ".json";
+        std::filesystem::path gsConfig = Common::GetShadUserDir() / "custom_configs" / filename;
 
-            if (QMessageBox::Yes ==
-                QMessageBox::question(this, "Confirm deletion",
-                                      "Are you sure you want to delete the game-specific config?",
-                                      QMessageBox::Yes | QMessageBox::No)) {
-                std::filesystem::remove(gsConfig);
-                QWidget::close();
-            }
-        });
+        if (QMessageBox::Yes ==
+            QMessageBox::question(this, "Confirm deletion",
+                                  "Are you sure you want to delete the game-specific config?",
+                                  QMessageBox::Yes | QMessageBox::No)) {
+            std::filesystem::remove(gsConfig);
+            QWidget::close();
+        }
+    });
 
     connect(this, &QDialog::rejected, this, [this]() {
         // reset real-time widgets to config value if not saved
@@ -385,6 +384,8 @@ void ShadSettings::LoadValuesFromConfig() {
     ui->serverLineEdit->setText(QString::fromStdString(gs_settings.GetShadNetServer()));
     ui->servWebApiLineEdit->setText(QString::fromStdString(gs_settings.GetShadnetWebapiServer()));
     ui->upnpCheckBox->setChecked(gs_settings.IsUPnPEnabled());
+    ui->p2pPortSpinBox->setValue(gs_settings.GetP2PPort());
+    ui->p2pPortRangeEndSpinBox->setValue(gs_settings.GetP2PPortRangeEnd());
 
     // User Settings
     ui->usernameLineEdit->setText(QString::fromStdString(user->user_name));
@@ -539,6 +540,16 @@ void ShadSettings::SaveSettings() {
     gs_settings.SetShadNetServer(ui->serverLineEdit->text().toStdString(), true);
     gs_settings.SetShadnetWebapiServer(ui->servWebApiLineEdit->text().toStdString(), true);
     gs_settings.SetUPnPEnabled(ui->upnpCheckBox->isChecked(), true);
+    const u32 p2p_port = static_cast<u32>(ui->p2pPortSpinBox->value());
+    u32 p2p_port_range_end = static_cast<u32>(ui->p2pPortRangeEndSpinBox->value());
+    if (p2p_port == 0) {
+        p2p_port_range_end = 0;
+    } else if (p2p_port_range_end != 0 && p2p_port_range_end < p2p_port) {
+        p2p_port_range_end = p2p_port;
+    }
+    ui->p2pPortRangeEndSpinBox->setValue(static_cast<int>(p2p_port_range_end));
+    gs_settings.SetP2PPort(p2p_port, true);
+    gs_settings.SetP2PPortRangeEnd(p2p_port_range_end, true);
 
     // Global Settings - use EmulatorSettings
     EmulatorSettings.SetDiscordRPCEnabled(ui->discordRPCCheckbox->isChecked());
@@ -625,6 +636,8 @@ void ShadSettings::SetDefaults() {
     ui->serverLineEdit->setText("srv.shadps4.net:31313");
     ui->servWebApiLineEdit->setText("http://srv.shadps4.net:31315");
     ui->upnpCheckBox->setChecked(true);
+    ui->p2pPortSpinBox->setValue(0);
+    ui->p2pPortRangeEndSpinBox->setValue(0);
 }
 
 void ShadSettings::getPhysicalDevices() {

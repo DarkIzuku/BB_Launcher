@@ -131,6 +131,7 @@ jobs:
         path: upload/
 
   build-macos:
+    if: github.ref_name != 'bloodborne-p2p-port-settings'
     runs-on: macos-15
     needs: [get-info, readbacks-contract]
     steps:
@@ -175,6 +176,7 @@ jobs:
 
 
   build-linux:
+    if: github.ref_name != 'bloodborne-p2p-port-settings'
     runs-on: ubuntu-24.04
     needs: [get-info, readbacks-contract]
     steps:
@@ -234,6 +236,7 @@ jobs:
         archive: false
 
   build-linux-downloader:
+    if: github.ref_name != 'bloodborne-p2p-port-settings'
     runs-on: ubuntu-24.04
     needs: [get-info, readbacks-contract]
     steps:
