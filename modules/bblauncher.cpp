@@ -598,6 +598,8 @@ void BBLauncher::LogSettings() {
 
     logDisplay->appendGrayText("");
     logDisplay->appendGrayText("60 FPS sound fix: " + status(SoundFixEnabled));
+    logDisplay->appendGrayText("Seamless Coop interaction debug logging: " +
+                               status(SeamlessDebugLoggingEnabled));
     logDisplay->appendGrayText("Automatic save backup: " + status(BackupSaveEnabled));
     logDisplay->appendGrayText("shadPS4 pre-release auto-update: " + status(AutoUpdateShadEnabled));
     logDisplay->appendGrayText("shadPS4 version list auto-update: " +
