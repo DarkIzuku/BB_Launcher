@@ -75,6 +75,7 @@ LauncherSettings::LauncherSettings(QWidget* parent)
 
     ui->UpdateCheckBox->setChecked(AutoUpdateEnabled);
     ui->SoundFixCheckBox->setChecked(SoundFixEnabled);
+    ui->SeamlessCoopCheckBox->setChecked(SeamlessCoopEnabled);
     ui->SeamlessDebugLoggingCheckBox->setChecked(SeamlessDebugLoggingEnabled);
     ui->BackupSaveCheckBox->setChecked(BackupSaveEnabled);
     ui->BackupIntervalComboBox->setCurrentText(QString::number(BackupInterval));
@@ -128,6 +129,7 @@ void LauncherSettings::SetLauncherDefaults() {
     ui->UpdateCheckBox->setChecked(false);
     ui->DarkThemeRadioButton->setChecked(true);
     ui->SoundFixCheckBox->setChecked(true);
+    ui->SeamlessCoopCheckBox->setChecked(false);
     ui->SeamlessDebugLoggingCheckBox->setChecked(false);
     ui->BackupIntervalComboBox->setCurrentText("10");
     ui->BackupNumberComboBox->setCurrentText("2");
@@ -175,6 +177,7 @@ void LauncherSettings::SaveSettings() {
     CustomUserFolder =
         Common::PathFromQString(ui->CustomFolderLineEdit->text());
     SoundFixEnabled = ui->SoundFixCheckBox->isChecked();
+    SeamlessCoopEnabled = ui->SeamlessCoopCheckBox->isChecked();
     SeamlessDebugLoggingEnabled = ui->SeamlessDebugLoggingCheckBox->isChecked();
     AutoUpdateEnabled = ui->UpdateCheckBox->isChecked();
 
