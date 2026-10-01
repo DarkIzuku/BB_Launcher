@@ -598,6 +598,7 @@ void BBLauncher::LogSettings() {
 
     logDisplay->appendGrayText("");
     logDisplay->appendGrayText("60 FPS sound fix: " + status(SoundFixEnabled));
+    logDisplay->appendGrayText("Seamless Coop mode: " + status(SeamlessCoopEnabled));
     logDisplay->appendGrayText("Seamless Coop interaction debug logging: " +
                                status(SeamlessDebugLoggingEnabled));
     logDisplay->appendGrayText("Automatic save backup: " + status(BackupSaveEnabled));
