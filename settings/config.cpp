@@ -21,6 +21,7 @@
 std::string Config::ApiKey = "";
 std::string Config::theme = "Dark";
 bool Config::SoundFixEnabled = true;
+bool Config::SeamlessDebugLoggingEnabled = false;
 bool Config::AutoUpdateEnabled = false;
 Config::FolderLocation Config::UserFolderLocation = Config::FolderLocation::BuildFolder;
 std::filesystem::path Config::CustomUserFolder = "";
@@ -74,6 +75,8 @@ void LoadSettings() {
     Config::SetTheme(theme);
 
     SoundFixEnabled = toml::find_or<bool>(data, "Launcher", "SoundFixEnabled", true);
+    SeamlessDebugLoggingEnabled =
+        toml::find_or<bool>(data, "Launcher", "SeamlessDebugLoggingEnabled", false);
     AutoUpdateEnabled = toml::find_or<bool>(data, "Launcher", "AutoUpdateEnabled", false);
     UserFolderLocation = static_cast<FolderLocation>(
         toml::find_or<int>(data, "Launcher", "UserFolderLocation",
@@ -211,6 +214,7 @@ void CreateSettingsFile() {
     data["Launcher"]["shadPath-New"] = "";
     data["Launcher"]["Theme"] = "Dark";
     data["Launcher"]["SoundFixEnabled"] = true;
+    data["Launcher"]["SeamlessDebugLoggingEnabled"] = false;
     data["Launcher"]["AutoUpdateEnabled"] = false;
     data["Launcher"]["UserFolderLocation"] = 0;
     data["Launcher"]["CustomUserFolder"] = "";
@@ -257,6 +261,7 @@ void SaveLauncherSettings() {
     data["Launcher"]["ApiKey"] = ApiKey;
     data["Launcher"]["Theme"] = theme;
     data["Launcher"]["SoundFixEnabled"] = SoundFixEnabled;
+    data["Launcher"]["SeamlessDebugLoggingEnabled"] = SeamlessDebugLoggingEnabled;
     data["Launcher"]["AutoUpdateEnabled"] = AutoUpdateEnabled;
     data["Launcher"]["installPath"] = std::string{fmt::UTF(Common::installPath.u8string()).data};
     data["Launcher"]["shadPath-New"] =
