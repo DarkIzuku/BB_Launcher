@@ -97,6 +97,16 @@
            </widget>
           </item>
           <item>
+           <widget class="QCheckBox" name="SeamlessCoopCheckBox">
+            <property name="toolTip">
+             <string>Launches Bloodborne with SHADPS4_BLOODBORNE_SEAMLESS_COOP=1. Disable this to launch in normal multiplayer mode. The setting applies the next time the emulator is started.</string>
+            </property>
+            <property name="text">
+             <string>Launch Bloodborne in Seamless Coop mode</string>
+            </property>
+           </widget>
+          </item>
+          <item>
            <widget class="QCheckBox" name="SeamlessDebugLoggingCheckBox">
             <property name="toolTip">
              <string>Logs detailed Seamless Coop Hunter's Dream interaction PROMPT/EVENT/RAW traces. Enable only while diagnosing Seamless Coop; requires restarting the emulator.</string>
