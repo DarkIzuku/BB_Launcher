@@ -42,6 +42,7 @@ extern std::string theme;
 extern FolderLocation UserFolderLocation;
 extern std::filesystem::path CustomUserFolder;
 extern bool SoundFixEnabled;
+extern bool SeamlessDebugLoggingEnabled;
 extern bool BackupSaveEnabled;
 extern int BackupInterval;
 extern int BackupNumber;
