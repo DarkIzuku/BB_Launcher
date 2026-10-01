@@ -31,8 +31,11 @@ void IpcClient::startEmulator(const QFileInfo& exe, const QStringList& args,
 
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
     env.insert("SHADPS4_ENABLE_IPC", "true");
-    // Make the expensive interaction trace deterministic. Seamless Coop itself stays enabled
-    // independently; this only controls the PROMPT/EVENT/RAW diagnostic observers.
+    // Override any inherited system/user environment value so BBLauncher is the single source
+    // of truth for Seamless Coop mode on launches started through the launcher.
+    env.insert("SHADPS4_BLOODBORNE_SEAMLESS_COOP", Config::SeamlessCoopEnabled ? "1" : "0");
+    // Keep the expensive interaction trace independent from Seamless Coop behavior. It controls
+    // only the PROMPT/EVENT/RAW diagnostic observers.
     env.insert("SHADPS4_BLOODBORNE_INTERACT_TRACE",
                Config::SeamlessDebugLoggingEnabled ? "1" : "0");
     env.insert("SHADPS4_BLOODBORNE_INTERACT_TRACE_VERBOSE", "0");
