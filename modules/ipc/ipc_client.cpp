@@ -31,6 +31,11 @@ void IpcClient::startEmulator(const QFileInfo& exe, const QStringList& args,
 
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
     env.insert("SHADPS4_ENABLE_IPC", "true");
+    // Make the expensive interaction trace deterministic. Seamless Coop itself stays enabled
+    // independently; this only controls the PROMPT/EVENT/RAW diagnostic observers.
+    env.insert("SHADPS4_BLOODBORNE_INTERACT_TRACE",
+               Config::SeamlessDebugLoggingEnabled ? "1" : "0");
+    env.insert("SHADPS4_BLOODBORNE_INTERACT_TRACE_VERBOSE", "0");
     process->setProcessEnvironment(env);
 
     std::filesystem::path userPath;
