@@ -96,6 +96,16 @@
             </property>
            </widget>
           </item>
+          <item>
+           <widget class="QCheckBox" name="SeamlessDebugLoggingCheckBox">
+            <property name="toolTip">
+             <string>Logs detailed Seamless Coop Hunter's Dream interaction PROMPT/EVENT/RAW traces. Enable only while diagnosing Seamless Coop; requires restarting the emulator.</string>
+            </property>
+            <property name="text">
+             <string>Seamless Coop interaction debug logging</string>
+            </property>
+           </widget>
+          </item>
          </layout>
         </widget>
        </item>
